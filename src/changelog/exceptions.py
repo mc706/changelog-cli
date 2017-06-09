@@ -1,0 +1,2 @@
+class ChangelogDoesNotExistError(Exception):
+    pass
