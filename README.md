@@ -78,6 +78,18 @@ This project adheres to [Semantic Versioning](http://semver.org/) and [Keep a Ch
 ---
 
 ### New
+
+### Changes
+
+### Fixes
+
+### Breaks
+
+
+## 1.5.0 - (2017-06-09)
+---
+
+### New
 * add new feature x
 
 ### Breaks
