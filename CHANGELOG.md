@@ -10,6 +10,8 @@ This project adheres to [Semantic Versioning](http://semver.org/) and [Keep a Ch
 ### New
 
 ### Changes
+* add additional tests
+* refactor utils to be classed based for better testing
 
 ### Fixes
 
