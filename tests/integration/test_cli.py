@@ -111,3 +111,8 @@ class CliIntegrationTestCase(unittest.TestCase):
             self.assertTrue(result)
             suggest = self.runner.invoke(cli, ['suggest'])
             self.assertEqual(suggest.output.strip(), '0.2.1')
+
+    def test_cli_release_missing(self):
+        with self.runner.isolated_filesystem():
+            result = self.runner.invoke(cli, ['release'])
+            self.assertEqual(result.output.strip(), 'No CHANGELOG.md Found, do you want to create one? [y/N]:')

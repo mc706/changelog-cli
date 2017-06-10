@@ -131,6 +131,8 @@ class ChangelogUtils:
             minus_2 = line_list[i - 2]
             if here == minus_1 == minus_2 == "\n":
                 line_list.pop(i)
+            elif minus_2 == '---\n' and here == minus_1 == '\n':
+                line_list.pop(i)
             else:
                 i += 1
         return line_list

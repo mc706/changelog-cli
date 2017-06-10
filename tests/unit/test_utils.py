@@ -34,6 +34,17 @@ class UtilsTestCase(unittest.TestCase):
         ]
         self.assertEqual(self.cl.crunch_lines(document), ['this\n', '\n', '\n', 'that\n'])
 
+    def test_crunch_lines_release(self):
+        document = [
+            "this\n",
+            "---\n",
+            "\n",
+            "\n",
+            "\n",
+            "that\n"
+        ]
+        self.assertEqual(self.cl.crunch_lines(document), ['this\n', '---\n', '\n', 'that\n'])
+
     def test_get_release_suggestion_patch(self):
         with patch.object(ChangelogUtils, 'get_changes', return_value={'changes': ''}):
             CL = ChangelogUtils()

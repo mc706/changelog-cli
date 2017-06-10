@@ -17,9 +17,15 @@ This project adheres to [Semantic Versioning](http://semver.org/) and [Keep a Ch
 
 
 
-## 0.3.5 - (2017-06-10)
+## 0.4.0 - (2017-06-10)
 ---
 
+### New
+* added extra line cleanup after release
+
+
+## 0.3.5 - (2017-06-10)
+---
 
 ### Changes
 * update python versions
@@ -28,7 +34,6 @@ This project adheres to [Semantic Versioning](http://semver.org/) and [Keep a Ch
 ## 0.3.4 - (2017-06-10)
 ---
 
-
 ### Changes
 * update test coverage
 * add python versions to README.
@@ -36,7 +41,6 @@ This project adheres to [Semantic Versioning](http://semver.org/) and [Keep a Ch
 
 ## 0.3.3 - (2017-06-10)
 ---
-
 
 ### Changes
 * add additional tests
