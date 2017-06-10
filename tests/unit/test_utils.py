@@ -1,4 +1,6 @@
 import unittest
+import os
+from datetime import date
 
 try:
     from unittest.mock import patch
@@ -6,7 +8,7 @@ except ImportError:
     from mock import patch
 
 from changelog.utils import ChangelogUtils
-
+from changelog.exceptions import ChangelogDoesNotExistError
 
 class UtilsTestCase(unittest.TestCase):
     def setUp(self):
@@ -97,6 +99,13 @@ class UtilsTestCase(unittest.TestCase):
             result = CL.get_current_version()
         self.assertEqual(result, '0.3.2')
 
+    def test_get_current_version_default(self):
+        sample_data = []
+        with patch.object(ChangelogUtils, 'get_changelog_data', return_value=sample_data) as mock_read:
+            CL = ChangelogUtils()
+            result = CL.get_current_version()
+        self.assertEqual(result, '0.1.0')
+
     def test_get_changes(self):
         sample_data = [
             "## Unreleased\n",
@@ -140,3 +149,55 @@ class UtilsTestCase(unittest.TestCase):
             with patch.object(ChangelogUtils, 'get_release_suggestion', return_value='minor'):
                 CL = ChangelogUtils()
                 self.assertEqual(CL.get_new_release_version('suggest'), '1.2.0')
+
+
+class ChangelogFileOperationTestCase(unittest.TestCase):
+
+    def setUp(self):
+        self.CL = ChangelogUtils()
+        self.CL.CHANGELOG = 'TEST_CHANGELOG.md'
+
+    def test_initialize_changelog_file(self):
+        self.CL.initialize_changelog_file()
+        self.assertTrue(os.path.isfile('TEST_CHANGELOG.md'))
+
+    def test_initialize_changelog_file_exists(self):
+        self.CL.initialize_changelog_file()
+        self.assertTrue(os.path.isfile('TEST_CHANGELOG.md'))
+        message = self.CL.initialize_changelog_file()
+        self.assertEqual(message, 'TEST_CHANGELOG.md already exists')
+
+    def test_get_changelog_data(self):
+        self.CL.initialize_changelog_file()
+        data = self.CL.get_changelog_data()
+        self.assertTrue(len(data) > 1)
+
+    def test_get_changelog_no_file(self):
+        self.assertRaises(ChangelogDoesNotExistError, self.CL.get_changelog_data)
+
+    def test_write_changelog(self):
+        self.CL.initialize_changelog_file()
+        original = self.CL.get_changelog_data()
+        data = original + ["test\n"]
+        self.CL.write_changelog(data)
+        modified = self.CL.get_changelog_data()
+        self.assertEqual(len(original) + 1, len(modified) )
+
+    def test_cut_release(self):
+        self.CL.initialize_changelog_file()
+        self.CL.update_section('new', "this is a test")
+        self.CL.cut_release('suggest')
+        data = self.CL.get_changelog_data()
+        self.assertTrue('## Unreleased\n' in data)
+        self.assertTrue('## 0.2.0 - ({})\n'.format(date.today().isoformat()) in data)
+        self.CL.update_section('break', "removed a thing")
+        self.CL.cut_release('suggest')
+        data2 = self.CL.get_changelog_data()
+        self.assertTrue('## Unreleased\n' in data2)
+
+
+    def tearDown(self):
+        try:
+            os.remove('TEST_CHANGELOG.md')
+        except Exception:
+            pass

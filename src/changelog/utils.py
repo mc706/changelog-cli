@@ -21,10 +21,10 @@ class ChangelogUtils:
         Creates a changelog if one does not already exist
         """
         if os.path.isfile(self.CHANGELOG):
-            return "CHANGELOG.md already exists"
+            return "{} already exists".format(self.CHANGELOG)
         with open(self.CHANGELOG, 'w') as changelog:
             changelog.write(INIT)
-        return "Created CHANGELOG.md"
+        return "Created {}".format(self.CHANGELOG)
 
     def get_changelog_data(self):
         """
