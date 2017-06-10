@@ -1,6 +1,6 @@
 import click
 
-from changelog.utils import initialize_changelog_file, update_section, get_new_release_version, cut_release
+from changelog.utils import initialize_changelog_file, update_section, get_new_release_version, cut_release, get_current_version
 from changelog.exceptions import ChangelogDoesNotExistError
 
 
@@ -11,13 +11,14 @@ def print_version(ctx, _, value):
     click.echo(v)
     ctx.exit()
 
+
 @click.group()
 @click.option('-v', '--version', is_flag=True, callback=print_version, expose_value=False, is_eager=True)
 def cli():
     pass
 
 
-@cli.command(help="Create CHANGELOG.md")
+@cli.command(help="Create CHANGELOG.md with some basic documentation")
 def init():
     click.echo('Initializing Changelog')
     outcome = initialize_changelog_file()
@@ -46,7 +47,7 @@ def change(message):
             update_section('change', message)
 
 
-@cli.command(help="add a line to the Fixes section")
+@cli.command(help="add a line to the FIXES section")
 @click.argument("message")
 def fix(message):
     try:
@@ -57,7 +58,7 @@ def fix(message):
             update_section('fix', message)
 
 
-@cli.command(help="add a line to the Breaks section")
+@cli.command(help="add a line to the BREAKS section")
 @click.argument("message")
 def breaks(message):
     try:
@@ -68,7 +69,7 @@ def breaks(message):
             update_section('break', message)
 
 
-@cli.command()
+@cli.command(help="cut a release and update the changelog accordingly")
 @click.option('--patch', 'release_type', flag_value='patch')
 @click.option('--minor', 'release_type', flag_value='minor')
 @click.option('--major', 'release_type', flag_value='major')
@@ -86,10 +87,19 @@ def release(release_type, auto_confirm):
         if click.confirm("No CHANGELOG.md Found, do you want to create one?"):
             initialize_changelog_file()
 
-@cli.command()
+
+@cli.command(help="returns the suggested next version based on the current logged changes")
 def suggest():
     try:
         new_version = get_new_release_version('suggest')
         click.echo(new_version)
+    except ChangelogDoesNotExistError:
+        pass
+
+@cli.command(help="returns the current application version based on the changelog")
+def current():
+    try:
+        version = get_current_version()
+        click.echo(version)
     except ChangelogDoesNotExistError:
         pass
