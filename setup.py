@@ -20,6 +20,7 @@ dev_requirements = [
     'coverage',
     'invoke',
     'wheel',
+    'mock'
 ]
 
 setup(

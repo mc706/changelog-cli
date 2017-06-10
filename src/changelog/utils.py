@@ -22,7 +22,7 @@ class ChangelogUtils:
         """
         if os.path.isfile(self.CHANGELOG):
             return "CHANGELOG.md already exists"
-        with open("CHANGELOG.md", 'w') as changelog:
+        with open(self.CHANGELOG, 'w') as changelog:
             changelog.write(INIT)
         return "Created CHANGELOG.md"
 
