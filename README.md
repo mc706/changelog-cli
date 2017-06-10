@@ -1,3 +1,4 @@
+[![Stories in Ready](https://badge.waffle.io/mc706/changelog-cli.png?label=ready&title=Ready)](https://waffle.io/mc706/changelog-cli?utm_source=badge)
 # Changelog CLI
 
 [![PyPI version](https://badge.fury.io/py/changelog-cli.svg)](https://badge.fury.io/py/changelog-cli)
