@@ -17,6 +17,14 @@ This project adheres to [Semantic Versioning](http://semver.org/) and [Keep a Ch
 
 
 
+## 0.2.2 - (2017-06-09)
+---
+
+
+### Changes
+* update documentation to rst for pypi
+
+
 ## 0.2.1 - (2017-06-09)
 ---
 
