@@ -1,4 +1,3 @@
-[![Stories in Ready](https://badge.waffle.io/mc706/changelog-cli.png?label=ready&title=Ready)](https://waffle.io/mc706/changelog-cli?utm_source=badge)
 # Changelog CLI
 
 [![PyPI version](https://badge.fury.io/py/changelog-cli.svg)](https://badge.fury.io/py/changelog-cli)
@@ -6,6 +5,7 @@
 [![Code Health](https://landscape.io/github/mc706/changelog-cli/master/landscape.svg?style=flat)](https://landscape.io/github/mc706/changelog-cli/master)
 [![Coverage Status](https://coveralls.io/repos/github/mc706/changelog-cli/badge.svg?branch=master)](https://coveralls.io/github/mc706/changelog-cli?branch=master)
 [![PyPI](https://img.shields.io/pypi/pyversions/changelog-cli.svg)](https://pypi.org/project/changelog-cli/)
+[![Stories in Ready](https://badge.waffle.io/mc706/changelog-cli.png?label=ready&title=Ready)](https://waffle.io/mc706/changelog-cli?utm_source=badge)
 
 
 A command line interface for managing your CHANGELOG.md files. Designed to make it easy to manage your repositories
