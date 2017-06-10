@@ -17,6 +17,14 @@ This project adheres to [Semantic Versioning](http://semver.org/) and [Keep a Ch
 
 
 
+## 0.2.1 - (2017-06-09)
+---
+
+
+### Fixes
+* version number import
+
+
 ## 0.2.0 - (2017-06-09)
 ---
 

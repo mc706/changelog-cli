@@ -1,7 +1,10 @@
 from setuptools import setup, find_packages
 import os
 
-from src.changelog._version import  __version__ as v
+VERSION_FILE = 'src/changelog/_version.py'
+with open(VERSION_FILE, 'r') as vf:
+    value = vf.read()
+v = value.split('=')[1].strip().strip('"')
 
 dev_requirements = [
     'prospector',
