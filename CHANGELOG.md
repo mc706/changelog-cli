@@ -8,8 +8,13 @@ This project adheres to [Semantic Versioning](http://semver.org/) and [Keep a Ch
 ---
 
 ### New
+* Add suggest command
+* Add version option
 
 ### Changes
+* changing hardcoded 'CHANGELOG.md' to variable for better mocking in tests
+* changing hardcoded  to variable for better mocking in tests
+* Updating tests
 
 ### Fixes
 

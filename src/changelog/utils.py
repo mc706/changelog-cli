@@ -5,6 +5,7 @@ from datetime import date
 from changelog.templates import INIT, UNRELEASED, RELEASE_LINE, RELEASE_LINE_REGEX, DEFAULT_VERSION
 from changelog.exceptions import ChangelogDoesNotExistError
 
+CHANGELOG = 'CHANGELOG.md'
 SECTIONS = {
     'new': "### New\n",
     'fix': "### Fixes\n",
@@ -18,7 +19,7 @@ def initialize_changelog_file():
     """
     Creates a changelog if one does not already exist
     """
-    if os.path.isfile('CHANGELOG.md'):
+    if os.path.isfile(CHANGELOG):
         return "CHANGELOG.md already exists"
     with open("CHANGELOG.md", 'w') as changelog:
         changelog.write(INIT)
@@ -29,9 +30,9 @@ def get_changelog_data():
     """
     Gets all of the lines from the current changelog
     """
-    if not os.path.isfile("CHANGELOG.md"):
+    if not os.path.isfile(CHANGELOG):
         raise ChangelogDoesNotExistError
-    with open("CHANGELOG.md", 'r') as changelog:
+    with open(CHANGELOG, 'r') as changelog:
         data = changelog.readlines()
     return data
 
@@ -40,7 +41,7 @@ def write_changelog(line_list):
     """
     writes the lines out to the changelog
     """
-    with open('CHANGELOG.md', 'w') as changelog:
+    with open(CHANGELOG, 'w') as changelog:
         changelog.writelines(line_list)
 
 

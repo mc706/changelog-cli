@@ -8,6 +8,8 @@ dev_requirements = [
     'tox',
     'twine',
     'coverage',
+    'invoke',
+    'wheel',
 ]
 
 setup(
