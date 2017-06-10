@@ -10,13 +10,20 @@ This project adheres to [Semantic Versioning](http://semver.org/) and [Keep a Ch
 ### New
 
 ### Changes
-* add additional tests
-* refactor utils to be classed based for better testing
 
 ### Fixes
 
 ### Breaks
 
+
+
+## 0.3.3 - (2017-06-10)
+---
+
+
+### Changes
+* add additional tests
+* refactor utils to be classed based for better testing
 
 
 ## 0.3.2 - (2017-06-09)
