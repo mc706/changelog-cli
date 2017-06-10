@@ -16,7 +16,6 @@ except ImportError:
 
 dev_requirements = [
     'prospector',
-    'pypandoc',
     'twine',
     'coverage',
     'invoke',
