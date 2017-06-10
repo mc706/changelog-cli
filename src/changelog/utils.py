@@ -20,10 +20,9 @@ def initialize_changelog_file():
     """
     if os.path.isfile('CHANGELOG.md'):
         return "CHANGELOG.md already exists"
-    else:
-        with open("CHANGELOG.md", 'w') as changelog:
-            changelog.write(INIT)
-        return "Created CHANGELOG.md"
+    with open("CHANGELOG.md", 'w') as changelog:
+        changelog.write(INIT)
+    return "Created CHANGELOG.md"
 
 
 def get_changelog_data():
@@ -95,23 +94,22 @@ def get_release_suggestion():
         return "major"
     elif 'new' in changes:
         return "minor"
-    else:
-        return "patch"
+    return "patch"
 
 
-def get_new_release_version(type):
+def get_new_release_version(release_type):
     """
     Returns the version of the new release
     """
     current_version = get_current_version()
-    if type not in ['major', 'minor', 'patch']:
-        type = get_release_suggestion()
-    return bump_version(current_version, type)
+    if release_type not in ['major', 'minor', 'patch']:
+        release_type = get_release_suggestion()
+    return bump_version(current_version, release_type)
 
 
-def cut_release(type="suggest"):
+def cut_release(release_type="suggest"):
     """Cuts a release and updates changelog"""
-    new_version = get_new_release_version(type)
+    new_version = get_new_release_version(release_type)
     changes = get_changes()
     data = get_changelog_data()
     output = []
@@ -145,15 +143,15 @@ def crunch_lines(line_list):
     return line_list
 
 
-def bump_version(version, type):
+def bump_version(version, release_type):
     """
-    Bumps a version number based on type
+    Bumps a version number based on release_type
     """
     x, y, z = version.split(".")
-    if type == "major":
+    if release_type == "major":
         x = int(x) + 1
         y = z = 0
-    elif type == "minor":
+    elif release_type == "minor":
         y = int(y) + 1
         z = 0
     else:

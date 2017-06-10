@@ -16,6 +16,15 @@ This project adheres to [Semantic Versioning](http://semver.org/) and [Keep a Ch
 ### Breaks
 
 
+
+## 0.1.1 - (2017-06-09)
+---
+
+### Changes
+* Add README badges
+* Add build tools
+
+
 ## 0.1.0 - (2017-06-09)
 ---
 
