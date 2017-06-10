@@ -17,6 +17,15 @@ This project adheres to [Semantic Versioning](http://semver.org/) and [Keep a Ch
 
 
 
+## 0.3.4 - (2017-06-10)
+---
+
+
+### Changes
+* update test coverage
+* add python versions to README.
+
+
 ## 0.3.3 - (2017-06-10)
 ---
 

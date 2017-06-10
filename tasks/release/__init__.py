@@ -49,7 +49,7 @@ def build(context):
     """
     Build the current python version
     """
-    context.run("python setup.py sdist bdist_wheel")
+    context.run("python setup.py sdist bdist_wheel --universal")
 
 
 def publish(context):
