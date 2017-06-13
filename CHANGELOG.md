@@ -17,6 +17,13 @@ This project adheres to [Semantic Versioning](http://semver.org/) and [Keep a Ch
 
 
 
+## 0.5.1 - (2017-06-13)
+---
+
+### Fixes
+* unreleased position in files with shorter headers
+
+
 ## 0.5.0 - (2017-06-13)
 ---
 

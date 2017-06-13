@@ -109,8 +109,8 @@ class CliIntegrationTestCase(unittest.TestCase):
             self.runner.invoke(cli, ['new', 'Adding a new feature'])
             result = self.runner.invoke(cli, ['release', '--yes'])
             self.assertTrue(result)
-            suggest = self.runner.invoke(cli, ['suggest'])
-            self.assertEqual(suggest.output.strip(), '0.2.1')
+            suggest = self.runner.invoke(cli, ['current'])
+            self.assertEqual(suggest.output.strip(), '0.2.0')
 
     def test_cli_release_missing(self):
         with self.runner.isolated_filesystem():
