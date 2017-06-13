@@ -10,6 +10,7 @@ except ImportError:
 from changelog.utils import ChangelogUtils
 from changelog.exceptions import ChangelogDoesNotExistError
 
+
 class UtilsTestCase(unittest.TestCase):
     def setUp(self):
         self.cl = ChangelogUtils()
@@ -79,16 +80,16 @@ class UtilsTestCase(unittest.TestCase):
                 CL = ChangelogUtils()
                 CL.update_section("new", 'this is a test')
         mock_write.assert_called_once_with([
-                "## Unreleased\n",
-                "---\n",
-                "\n",
-                "### New\n",
-                "* this is a test\n",
-                "\n",
-                "### Fixes\n",
-                "\n",
-                "### Breaks\n",
-            ])
+            "## Unreleased\n",
+            "---\n",
+            "\n",
+            "### New\n",
+            "* this is a test\n",
+            "\n",
+            "### Fixes\n",
+            "\n",
+            "### Breaks\n",
+        ])
 
     def test_get_current_version(self):
         sample_data = [
@@ -163,7 +164,6 @@ class UtilsTestCase(unittest.TestCase):
 
 
 class ChangelogFileOperationTestCase(unittest.TestCase):
-
     def setUp(self):
         self.CL = ChangelogUtils()
         self.CL.CHANGELOG = 'TEST_CHANGELOG.md'
@@ -192,7 +192,7 @@ class ChangelogFileOperationTestCase(unittest.TestCase):
         data = original + ["test\n"]
         self.CL.write_changelog(data)
         modified = self.CL.get_changelog_data()
-        self.assertEqual(len(original) + 1, len(modified) )
+        self.assertEqual(len(original) + 1, len(modified))
 
     def test_cut_release(self):
         self.CL.initialize_changelog_file()
@@ -206,6 +206,17 @@ class ChangelogFileOperationTestCase(unittest.TestCase):
         data2 = self.CL.get_changelog_data()
         self.assertTrue('## Unreleased\n' in data2)
 
+    def test_match_version_canonical(self):
+        line = "## 0.2.1 - (2017-06-09)"
+        self.assertEqual(self.CL.match_version(line), '0.2.1')
+
+    def test_match_version_miss(self):
+        line = '### Changes'
+        self.assertFalse(self.CL.match_version(line))
+
+    def test_match_version_basic(self):
+        line = '## v4.1.3'
+        self.assertEqual(self.CL.match_version(line), '4.1.3')
 
     def tearDown(self):
         try:

@@ -17,6 +17,13 @@ This project adheres to [Semantic Versioning](http://semver.org/) and [Keep a Ch
 
 
 
+## 0.5.0 - (2017-06-13)
+---
+
+### New
+* Added handling for additional version delimiter in changelog files
+
+
 ## 0.4.0 - (2017-06-10)
 ---
 

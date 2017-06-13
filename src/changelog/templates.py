@@ -24,4 +24,7 @@ DEFAULT_VERSION = "0.1.0"
 
 RELEASE_LINE = "## {0} - ({1})\n"
 
-RELEASE_LINE_REGEX = r"^## (\d+\.\d+\.\d+) \- \(\d{4}-\d{2}-\d{2}\)$"
+RELEASE_LINE_REGEXES = [
+    r"^##\s(?P<v>\d+\.\d+\.\d+)\s\-\s\(\d{4}-\d{2}-\d{2}\)$",
+    r"^##\sv?(?P<v>\d+\.\d+\.\d+)",
+]

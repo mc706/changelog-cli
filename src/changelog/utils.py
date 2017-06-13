@@ -2,7 +2,7 @@ import os
 import re
 from datetime import date
 
-from changelog.templates import INIT, UNRELEASED, RELEASE_LINE, RELEASE_LINE_REGEX, DEFAULT_VERSION
+from changelog.templates import INIT, UNRELEASED, RELEASE_LINE, DEFAULT_VERSION, RELEASE_LINE_REGEXES
 from changelog.exceptions import ChangelogDoesNotExistError
 
 
@@ -54,9 +54,9 @@ class ChangelogUtils:
         """Gets the Current Application Version Based on Changelog"""
         data = self.get_changelog_data()
         for line in data:
-            match = re.match(RELEASE_LINE_REGEX, line)
+            match = self.match_version(line)
             if match:
-                return match.groups()[0]
+                return match
         return DEFAULT_VERSION
 
     def get_changes(self):
@@ -68,7 +68,7 @@ class ChangelogUtils:
         for line in data:
             if line in ['---\n', '\n']:
                 continue
-            if re.match(RELEASE_LINE_REGEX, line):
+            if self.match_version(line):
                 break
             if reading:
                 if line in self.REVERSE_SECTIONS:
@@ -109,7 +109,7 @@ class ChangelogUtils:
         output = []
         reading = True
         for line in data:
-            if re.match(RELEASE_LINE_REGEX, line):
+            if self.match_version(line):
                 reading = False
             if line == "## Unreleased\n":
                 line = RELEASE_LINE.format(new_version, date.today().isoformat())
@@ -151,3 +151,13 @@ class ChangelogUtils:
         else:
             z = int(z) + 1
         return "{}.{}.{}".format(x, y, z)
+
+    def match_version(self, line):
+        """
+        Matches a line vs the list of version strings. Returns group or False
+        """
+        for regex in RELEASE_LINE_REGEXES:
+            match = re.match(regex, line)
+            if match and match.group('v'):
+                return match.group('v')
+        return False
