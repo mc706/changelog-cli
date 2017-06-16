@@ -12,10 +12,16 @@ This project adheres to [Semantic Versioning](http://semver.org/) and [Keep a Ch
 ### Changes
 
 ### Fixes
-* start first release at 0.1.0
 
 ### Breaks
 
+
+
+## 0.5.3 - (2017-06-16)
+---
+
+### Fixes
+* start first release at 0.1.0
 
 
 ## 0.5.2 - (2017-06-13)
