@@ -22,7 +22,7 @@ class CliIntegrationTestCase(unittest.TestCase):
         with self.runner.isolated_filesystem():
             self.runner.invoke(cli, ['init'])
             result = self.runner.invoke(cli, ['current'])
-            self.assertEqual(result.output.strip(), '0.1.0')
+            self.assertEqual(result.output.strip(), '0.0.0')
 
     def test_cli_current_missing(self):
         with self.runner.isolated_filesystem():
@@ -33,7 +33,7 @@ class CliIntegrationTestCase(unittest.TestCase):
         with self.runner.isolated_filesystem():
             self.runner.invoke(cli, ['init'])
             result = self.runner.invoke(cli, ['suggest'])
-            self.assertEqual(result.output.strip(), '0.1.1')
+            self.assertEqual(result.output.strip(), '0.0.1')
 
     def test_cli_suggest_missing(self):
         with self.runner.isolated_filesystem():
@@ -50,7 +50,7 @@ class CliIntegrationTestCase(unittest.TestCase):
             result = self.runner.invoke(cli, ['new', 'Adding a new feature'])
             self.assertTrue(result)
             suggest = self.runner.invoke(cli, ['suggest'])
-            self.assertEqual(suggest.output.strip(), '0.2.0')
+            self.assertEqual(suggest.output.strip(), '0.1.0')
 
     def test_cli_new_missing(self):
         with self.runner.isolated_filesystem():
@@ -63,7 +63,7 @@ class CliIntegrationTestCase(unittest.TestCase):
             result = self.runner.invoke(cli, ['change', 'Changing a feature'])
             self.assertTrue(result)
             suggest = self.runner.invoke(cli, ['suggest'])
-            self.assertEqual(suggest.output.strip(), '0.1.1')
+            self.assertEqual(suggest.output.strip(), '0.0.1')
 
     def test_cli_change_missing(self):
         with self.runner.isolated_filesystem():
@@ -76,7 +76,7 @@ class CliIntegrationTestCase(unittest.TestCase):
             result = self.runner.invoke(cli, ['fix', 'Fix a Bug'])
             self.assertTrue(result)
             suggest = self.runner.invoke(cli, ['suggest'])
-            self.assertEqual(suggest.output.strip(), '0.1.1')
+            self.assertEqual(suggest.output.strip(), '0.0.1')
 
     def test_cli_fix_missing(self):
         with self.runner.isolated_filesystem():
@@ -101,7 +101,7 @@ class CliIntegrationTestCase(unittest.TestCase):
             self.runner.invoke(cli, ['init'])
             self.runner.invoke(cli, ['new', 'Adding a new feature'])
             result = self.runner.invoke(cli, ['release'])
-            self.assertEqual(result.output.strip(), 'Planning on releasing version 0.2.0. Proceed? [y/N]:')
+            self.assertEqual(result.output.strip(), 'Planning on releasing version 0.1.0. Proceed? [y/N]:')
 
     def test_cli_release_y(self):
         with self.runner.isolated_filesystem():
@@ -110,7 +110,7 @@ class CliIntegrationTestCase(unittest.TestCase):
             result = self.runner.invoke(cli, ['release', '--yes'])
             self.assertTrue(result)
             suggest = self.runner.invoke(cli, ['current'])
-            self.assertEqual(suggest.output.strip(), '0.2.0')
+            self.assertEqual(suggest.output.strip(), '0.1.0')
 
     def test_cli_release_missing(self):
         with self.runner.isolated_filesystem():

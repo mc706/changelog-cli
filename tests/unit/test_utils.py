@@ -116,7 +116,7 @@ class UtilsTestCase(unittest.TestCase):
         with patch.object(ChangelogUtils, 'get_changelog_data', return_value=sample_data) as mock_read:
             CL = ChangelogUtils()
             result = CL.get_current_version()
-        self.assertEqual(result, '0.1.0')
+        self.assertEqual(result, '0.0.0')
 
     def test_get_changes(self):
         sample_data = [
@@ -200,7 +200,7 @@ class ChangelogFileOperationTestCase(unittest.TestCase):
         self.CL.cut_release('suggest')
         data = self.CL.get_changelog_data()
         self.assertTrue('## Unreleased\n' in data)
-        self.assertTrue('## 0.2.0 - ({})\n'.format(date.today().isoformat()) in data)
+        self.assertTrue('## 0.1.0 - ({})\n'.format(date.today().isoformat()) in data)
         self.CL.update_section('break', "removed a thing")
         self.CL.cut_release('suggest')
         data2 = self.CL.get_changelog_data()
