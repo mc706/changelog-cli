@@ -8,7 +8,6 @@ This project adheres to [Semantic Versioning](http://semver.org/) and [Keep a Ch
 ---
 
 ### New
-* add view command
 
 ### Changes
 
@@ -16,6 +15,13 @@ This project adheres to [Semantic Versioning](http://semver.org/) and [Keep a Ch
 
 ### Breaks
 
+
+
+## 0.6.0 - (2017-07-16)
+---
+
+### New
+* add view command
 
 
 ## 0.5.4 - (2017-07-16)
