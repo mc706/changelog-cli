@@ -10,12 +10,18 @@ This project adheres to [Semantic Versioning](http://semver.org/) and [Keep a Ch
 ### New
 
 ### Changes
-* add 'keep a changelog' regex for parsing
 
 ### Fixes
 
 ### Breaks
 
+
+
+## 0.5.4 - (2017-07-16)
+---
+
+### Changes
+* add 'keep a changelog' regex for parsing
 
 
 ## 0.5.3 - (2017-06-16)
