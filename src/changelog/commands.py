@@ -112,3 +112,21 @@ def current():
         click.echo(version)
     except ChangelogDoesNotExistError:
         pass
+
+@cli.command(help="view the current and unreleased portion of the changelog")
+def view():
+    CL = ChangelogUtils()
+    try:
+        data = CL.get_changelog_data()
+        first = False
+        for line in data:
+            if CL.match_version(line):
+                if first:
+                    break
+                else:
+                    first = True
+            click.echo(line.strip())
+
+    except ChangelogDoesNotExistError:
+        if click.confirm("No CHANGELOG.md Found, do you want to create one?"):
+            CL.initialize_changelog_file()

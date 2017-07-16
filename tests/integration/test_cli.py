@@ -116,3 +116,10 @@ class CliIntegrationTestCase(unittest.TestCase):
         with self.runner.isolated_filesystem():
             result = self.runner.invoke(cli, ['release'])
             self.assertEqual(result.output.strip(), 'No CHANGELOG.md Found, do you want to create one? [y/N]:')
+
+    def test_cli_view(self):
+        with self.runner.isolated_filesystem():
+            self.runner.invoke(cli, ['init'])
+            self.runner.invoke(cli, ['new', 'Adding a new feature'])
+            result = self.runner.invoke(cli, ['view'])
+            self.assertTrue(result)
