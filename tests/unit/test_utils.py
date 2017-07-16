@@ -218,6 +218,10 @@ class ChangelogFileOperationTestCase(unittest.TestCase):
         line = '## v4.1.3'
         self.assertEqual(self.CL.match_version(line), '4.1.3')
 
+    def test_match_keep_a_changelog(self):
+        line = '## [4.1.3] - 2017-06-20'
+        self.assertEqual(self.CL.match_version(line), '4.1.3')
+
     def tearDown(self):
         try:
             os.remove('TEST_CHANGELOG.md')
