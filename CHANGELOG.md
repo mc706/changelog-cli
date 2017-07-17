@@ -4,18 +4,24 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/) and [Keep a Changelog](http://keepachangelog.com/).
 
 
+
 ## Unreleased
 ---
 
 ### New
 
 ### Changes
-* add determinism fuzz testing
 
 ### Fixes
 
 ### Breaks
 
+
+## 0.6.1 - (2017-07-17)
+---
+
+### Changes
+* add determinism fuzz testing
 
 
 ## 0.6.0 - (2017-07-16)
