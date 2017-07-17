@@ -118,7 +118,7 @@ class ChangelogUtils:
             if reading and line in self.REVERSE_SECTIONS and self.REVERSE_SECTIONS[line] not in changes:
                 continue
             output.append(line)
-        output.insert(unreleased_position - 1, UNRELEASED)
+        output.insert(unreleased_position, UNRELEASED)
         output = self.crunch_lines(output)
         self.write_changelog(output)
 
