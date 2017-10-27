@@ -13,9 +13,15 @@ This project adheres to [Semantic Versioning](http://semver.org/) and [Keep a Ch
 ### Changes
 
 ### Fixes
-* update init template
 
 ### Breaks
+
+
+## 0.6.2 - (2017-10-27)
+---
+
+### Fixes
+* update init template
 
 
 ## 0.6.1 - (2017-07-17)
