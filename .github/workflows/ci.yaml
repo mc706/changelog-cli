@@ -1,0 +1,50 @@
+name: CI
+
+on:
+    pull_request: []
+    push:
+        branches:
+        - master
+
+jobs:
+    unittest:
+        runs-on: ubuntu-latest
+        name: ${{ matrix.py-version }} Unittest + Coverage
+        strategy:
+            fail-fast: false
+            matrix:
+                py-version:
+                - "2.7"
+                - "3.4"
+                - "3.5"
+                - "3.6"
+                - "3.7-dev"
+                - "nightly"
+                - "pypy"
+                - "pypy3"
+                - "pypy-5.3.1"
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v1
+
+            - name: Setup ${{ matrix.py-version }}
+              uses: actions/setup-python@v1
+              with:
+                  python-version: ${{ matrix.py-version }}
+
+            - name: Install dependencies
+              run: pip install -r requirements.txt python-coveralls
+
+            - name: Unittest via coverage
+              run: coverage run -m unittest discover
+
+            - name: Results
+              run: |
+                  coverage report
+                  coverage html
+
+            - name: Upload htmlcov
+              uses: actions/upload-artifact@v1.0.0
+              with:
+                  name: htmlcov
+                  path: htmlcov
