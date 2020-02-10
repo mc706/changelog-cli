@@ -9,13 +9,20 @@ This project adheres to [Semantic Versioning](http://semver.org/) and [Keep a Ch
 ---
 
 ### New
-* Expose the type of release with `changelog suggest --type`
 
 ### Changes
 
 ### Fixes
+* Fix Description for pypi
 
 ### Breaks
+
+
+## 0.7.0 - (2020-02-09)
+---
+
+### New
+* Expose the type of release with `changelog suggest --type`
 
 
 ## 0.6.2 - (2017-10-27)

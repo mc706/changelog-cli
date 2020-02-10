@@ -6,14 +6,6 @@ with open(VERSION_FILE, 'r') as vf:
     value = vf.read()
 v = value.split('=')[1].strip().strip('"')
 
-try:
-    from pypandoc import convert
-
-    read_md = lambda f: convert(f, 'rst')
-except ImportError:
-    print("warning: pypandoc module not found, could not convert Markdown to RST")
-    read_md = lambda f: open(f, 'r').read()
-
 dev_requirements = [
     'prospector',
     'twine',
@@ -26,7 +18,8 @@ dev_requirements = [
 setup(
     name='changelog-cli',
     description='Command line interface for managing CHANGELOG.md files',
-    long_description=read_md("README.md"),
+    long_description=open("README.md", 'r').read(),
+    long_description_content_type='text/markdown',
     version=os.getenv('MODULE_VERSION_ID', v),
     author='Ryan McDevitt',
     author_email='mcdevitt.ryan@gmail.com',
