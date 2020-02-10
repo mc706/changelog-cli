@@ -9,6 +9,7 @@ This project adheres to [Semantic Versioning](http://semver.org/) and [Keep a Ch
 ---
 
 ### New
+* Expose the type of release with `changelog suggest --type`
 
 ### Changes
 

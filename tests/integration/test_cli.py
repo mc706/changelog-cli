@@ -78,6 +78,14 @@ class CliIntegrationTestCase(unittest.TestCase):
             suggest = self.runner.invoke(cli, ['suggest'])
             self.assertEqual(suggest.output.strip(), '0.0.1')
 
+    def test_cli_suggest_type_fix(self):
+        with self.runner.isolated_filesystem():
+            self.runner.invoke(cli, ['init'])
+            result = self.runner.invoke(cli, ['fix', 'Fix a Bug'])
+            self.assertTrue(result)
+            suggest = self.runner.invoke(cli, ['suggest', '--type'])
+            self.assertEqual(suggest.output.strip(), 'patch')
+
     def test_cli_fix_missing(self):
         with self.runner.isolated_filesystem():
             result = self.runner.invoke(cli, ['fix', 'Fix a Bug'], input='y\n')
@@ -90,6 +98,14 @@ class CliIntegrationTestCase(unittest.TestCase):
             self.assertTrue(result)
             suggest = self.runner.invoke(cli, ['suggest'])
             self.assertEqual(suggest.output.strip(), '1.0.0')
+
+    def test_cli_suggest_type_breaks(self):
+        with self.runner.isolated_filesystem():
+            self.runner.invoke(cli, ['init'])
+            result = self.runner.invoke(cli, ['breaks', 'Breaking Change'])
+            self.assertTrue(result)
+            suggest = self.runner.invoke(cli, ['suggest', '--type'])
+            self.assertEqual(suggest.output.strip(), 'major')
 
     def test_cli_breaks_missing(self):
         with self.runner.isolated_filesystem():

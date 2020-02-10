@@ -74,9 +74,8 @@ class ChangelogUtils:
                 if line in self.REVERSE_SECTIONS:
                     section = self.REVERSE_SECTIONS[line]
                     continue
-                else:
-                    changes[section] = line.strip().lstrip("* ")
-                    continue
+                changes[section] = line.strip().lstrip("* ")
+                continue
             if line == "## Unreleased\n":
                 reading = True
                 continue
@@ -88,7 +87,7 @@ class ChangelogUtils:
         changes = self.get_changes()
         if 'break' in changes:
             return "major"
-        elif 'new' in changes:
+        if 'new' in changes:
             return "minor"
         return "patch"
 

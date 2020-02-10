@@ -2,10 +2,9 @@ import click
 
 from changelog.utils import ChangelogUtils
 from changelog.exceptions import ChangelogDoesNotExistError
-
+from changelog._version import __version__ as v
 
 def print_version(ctx, _, value):
-    from changelog._version import __version__ as v
     if not value or ctx.resilient_parsing:
         return
     click.echo(v)
@@ -95,11 +94,15 @@ def release(release_type, auto_confirm):
 
 
 @cli.command(help="returns the suggested next version based on the current logged changes")
-def suggest():
+@click.option('--type', "release_type", is_flag=True)
+def suggest(release_type):
     CL = ChangelogUtils()
     try:
-        new_version = CL.get_new_release_version('suggest')
-        click.echo(new_version)
+        if release_type:
+            click.echo(CL.get_release_suggestion())
+        else:
+            new_version = CL.get_new_release_version('suggest')
+            click.echo(new_version)
     except ChangelogDoesNotExistError:
         pass
 
@@ -123,8 +126,7 @@ def view():
             if CL.match_version(line):
                 if first:
                     break
-                else:
-                    first = True
+                first = True
             click.echo(line.strip())
 
     except ChangelogDoesNotExistError:
