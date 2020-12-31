@@ -4,6 +4,7 @@ from changelog.utils import ChangelogUtils
 from changelog.exceptions import ChangelogDoesNotExistError
 from changelog._version import __version__ as v
 
+
 def print_version(ctx, _, value):
     if not value or ctx.resilient_parsing:
         return
@@ -25,52 +26,27 @@ def init():
     click.echo(outcome)
 
 
-@cli.command(help="add a line to the NEW section")
-@click.argument("message")
-def new(message):
-    CL = ChangelogUtils()
-    try:
-        CL.update_section('new', message)
-    except ChangelogDoesNotExistError:
-        if click.confirm("No CHANGELOG.md Found, do you want to create one?"):
-            CL.initialize_changelog_file()
-            CL.update_section('new', message)
+def bind_section_command(name):
+    @click.argument("message")
+    def section_command(message):
+        CL = ChangelogUtils()
+        try:
+            CL.update_section(name, message)
+        except ChangelogDoesNotExistError:
+            if click.confirm("No CHANGELOG.md found, do you want to create one?"):
+                CL.initialize_changelog_file()
+                CL.update_section(name, message)
+
+    section_command.__name__ = name
+    return section_command
 
 
-@cli.command(help="add a line to the CHANGES section")
-@click.argument("message")
-def change(message):
-    CL = ChangelogUtils()
-    try:
-        CL.update_section('change', message)
-    except ChangelogDoesNotExistError:
-        if click.confirm("No CHANGELOG.md Found, do you want to create one?"):
-            CL.initialize_changelog_file()
-            CL.update_section('change', message)
-
-
-@cli.command(help="add a line to the FIXES section")
-@click.argument("message")
-def fix(message):
-    CL = ChangelogUtils()
-    try:
-        CL.update_section('fix', message)
-    except ChangelogDoesNotExistError:
-        if click.confirm("No CHANGELOG.md Found, do you want to create one?"):
-            CL.initialize_changelog_file()
-            CL.update_section('fix', message)
-
-
-@cli.command(help="add a line to the BREAKS section")
-@click.argument("message")
-def breaks(message):
-    CL = ChangelogUtils()
-    try:
-        CL.update_section('break', message)
-    except ChangelogDoesNotExistError:
-        if click.confirm("No CHANGELOG.md Found, do you want to create one?"):
-            CL.initialize_changelog_file()
-            CL.update_section('break', message)
+for change_type in ChangelogUtils.TYPES_OF_CHANGE:
+    section_command_func = bind_section_command(change_type)
+    cli.command(
+        name=change_type,
+        help="Add a line to the '{}' section".format(change_type.capitalize())
+    )(section_command_func)
 
 
 @cli.command(help="cut a release and update the changelog accordingly")
@@ -89,7 +65,7 @@ def release(release_type, auto_confirm):
             if click.confirm("Planning on releasing version {}. Proceed?".format(new_version)):
                 CL.cut_release(release_type)
     except ChangelogDoesNotExistError:
-        if click.confirm("No CHANGELOG.md Found, do you want to create one?"):
+        if click.confirm("No CHANGELOG.md found, do you want to create one?"):
             CL.initialize_changelog_file()
 
 
@@ -116,6 +92,7 @@ def current():
     except ChangelogDoesNotExistError:
         pass
 
+
 @cli.command(help="view the current and unreleased portion of the changelog")
 def view():
     CL = ChangelogUtils()
@@ -130,5 +107,5 @@ def view():
             click.echo(line.strip())
 
     except ChangelogDoesNotExistError:
-        if click.confirm("No CHANGELOG.md Found, do you want to create one?"):
+        if click.confirm("No CHANGELOG.md found, do you want to create one?"):
             CL.initialize_changelog_file()

@@ -7,7 +7,7 @@
 
 
 A command line interface for managing your CHANGELOG.md files. Designed to make it easy to manage your repositories
-release history according to [Keep a Changelog](http://keepachangelog.com/).
+release history according to [Keep a Changelog](http://keepachangelog.com/) v1.1.0.
 
 ## Installation
 install using `pip` via:
@@ -18,15 +18,15 @@ pip install changelog-cli
 
 
 ## How To
-To keep an accurate changelog, whenenever you commit a change that affects how end users use
+To keep an accurate changelog, whenever you commit a change that affects how end users use
 your project, use this command line tool to add a line to the changelog. 
 
-If you added a new feature, use something like `changelog new "added feature x"`. This will add a
-line to your `CHANGELOG.md` under the `### New` section. 
+If you added a new feature, use something like `changelog added "added feature x"`. This will add a
+line to your `CHANGELOG.md` under the `### Added` section. 
 
 When you are ready for release, run `changelog release` and that will infer the correct semantic 
-version based on the types of changes since the last release. For example your `new` change should
-prompt a `minor (0.X.0)` release. A `breaks` change would prompt a `major (X.0.0)` version bump and `fix` or `change` changes
+version based on the types of changes since the last release. For example your `added` change should
+prompt a `minor (0.X.0)` release. A `removed` change would prompt a `major (X.0.0)` version bump and `fixed` or `changed` changes
  would prompt a `patch (0.0.X)`.
  
 You can manually override what type of of release via `changelog release --minor` using the `--patch`, `--minor` or `--major`
@@ -36,7 +36,7 @@ flags.
 ## Commands
 `changelog init` -> Creates a CHANGELOG.md with some basic documentation in it.
 
-`changelog (new|change|fix|breaks) "<message>"` -> adds a line to the appropriate section
+`changelog (added|changed|deprecated|removed|fixed|security) "<message>"` -> adds a line to the appropriate section
 
 `changelog release (--major|minor|patch|suggest) (--yes)` -> Cuts a release for the changelog, incrementing the version.
 
@@ -55,10 +55,10 @@ If you get tired of typing out `changelog` for every command, it can also be acc
 ```
 >>> changelog current
 1.4.1
->>> changelog new "add new feature x"
+>>> changelog added "add new feature x"
 >>> changelog suggest
 1.5.0
->>> changelog breaks "removing key feature y"
+>>> changelog removed "removing key feature y"
 >>> cl release
 Planning on releasing version 2.0.0. Proceed? [y/N]: n
 >>> cl release --minor
@@ -78,29 +78,32 @@ This project adheres to [Semantic Versioning](http://semver.org/) and [Keep a Ch
 ## Unreleased
 ---
 
-### New
+### Added
 
-### Changes
+### Changed
 
-### Fixes
+### Deprecated
 
-### Breaks
+### Removed
 
+### Fixed
+
+### Security
 
 ## 1.5.0 - (2017-06-09)
 ---
 
-### New
+### Added
 * add new feature x
 
-### Breaks
+### Removed
 * remove key feature y
 
 
 ## 1.4.1 - (2017-05-29)
 ---
 
-### Changes
+### Changed
 * updating documentation
 
 

@@ -2,19 +2,18 @@ import os
 import re
 from datetime import date
 
-from changelog.templates import INIT, UNRELEASED, RELEASE_LINE, DEFAULT_VERSION, RELEASE_LINE_REGEXES
+from changelog.templates import BASE, RELEASE_LINE, DEFAULT_VERSION, RELEASE_LINE_REGEXES
 from changelog.exceptions import ChangelogDoesNotExistError
 
 
 class ChangelogUtils:
     CHANGELOG = 'CHANGELOG.md'
-    SECTIONS = {
-        'new': "### New\n",
-        'fix': "### Fixes\n",
-        'change': '### Changes\n',
-        'break': "### Breaks\n"
-    }
+    TYPES_OF_CHANGE = ['added', 'changed', 'deprecated', 'removed', 'fixed', 'security']
+    SECTIONS = {change_type: "### {}\n".format(change_type.capitalize()) for change_type in TYPES_OF_CHANGE}
     REVERSE_SECTIONS = {v: k for k, v in SECTIONS.items()}
+
+    UNRELEASED = "\n## Unreleased\n---\n\n" + ''.join(["{0}\n\n".format(section_header) for section_header in REVERSE_SECTIONS.keys()])
+    INIT = BASE + UNRELEASED
 
     def initialize_changelog_file(self):
         """
@@ -23,7 +22,7 @@ class ChangelogUtils:
         if os.path.isfile(self.CHANGELOG):
             return "{} already exists".format(self.CHANGELOG)
         with open(self.CHANGELOG, 'w') as changelog:
-            changelog.write(INIT)
+            changelog.write(self.INIT)
         return "Created {}".format(self.CHANGELOG)
 
     def get_changelog_data(self):
@@ -85,9 +84,9 @@ class ChangelogUtils:
     def get_release_suggestion(self):
         """Suggests a release type"""
         changes = self.get_changes()
-        if 'break' in changes:
+        if 'removed' in changes:
             return "major"
-        if 'new' in changes:
+        if 'added' in changes:
             return "minor"
         return "patch"
 
@@ -117,7 +116,7 @@ class ChangelogUtils:
             if reading and line in self.REVERSE_SECTIONS and self.REVERSE_SECTIONS[line] not in changes:
                 continue
             output.append(line)
-        output.insert(unreleased_position, UNRELEASED)
+        output.insert(unreleased_position, self.UNRELEASED)
         output = self.crunch_lines(output)
         self.write_changelog(output)
 
