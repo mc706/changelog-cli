@@ -9,16 +9,16 @@ from changelog.exceptions import ChangelogDoesNotExistError
 class ChangelogUtils:
     CHANGELOG = 'CHANGELOG.md'
     TYPES_OF_CHANGE = ['added', 'changed', 'deprecated', 'removed', 'fixed', 'security']
-    SECTIONS = {change_type: "### {}\n".format(change_type.capitalize()) for change_type in TYPES_OF_CHANGE}
+    SECTIONS = {change_type: f"### {change_type.capitalize()}\n" for change_type in TYPES_OF_CHANGE}
     REVERSE_SECTIONS = {v: k for k, v in SECTIONS.items()}
 
     # These were the sections before v1.0.0
     # Kept so that user from pre-v1.0.0 versions can upgrade
     BETA_TYPES_OF_CHANGE = ['new', 'changes', 'fixes', 'breaks']
-    BETA_SECTIONS = {change_type: "### {}\n".format(change_type.capitalize()) for change_type in BETA_TYPES_OF_CHANGE}
+    BETA_SECTIONS = {change_type: f"### {change_type.capitalize()}\n" for change_type in BETA_TYPES_OF_CHANGE}
     BETA_REVERSE_SECTIONS = {v: k for k, v in BETA_SECTIONS.items()}
 
-    UNRELEASED = "\n## Unreleased\n---\n\n" + ''.join(["{0}\n\n".format(section_header) for section_header in REVERSE_SECTIONS.keys()])
+    UNRELEASED = "\n## Unreleased\n---\n\n" + ''.join(["{section_header}\n\n" for section_header in REVERSE_SECTIONS.keys()])
     INIT = BASE + UNRELEASED
 
     def initialize_changelog_file(self):
@@ -26,10 +26,10 @@ class ChangelogUtils:
         Creates a changelog if one does not already exist
         """
         if os.path.isfile(self.CHANGELOG):
-            return "{} already exists".format(self.CHANGELOG)
+            return f"{self.CHANGELOG} already exists"
         with open(self.CHANGELOG, 'w') as changelog:
             changelog.write(self.INIT)
-        return "Created {}".format(self.CHANGELOG)
+        return f"Created {self.CHANGELOG}"
 
     def get_changelog_data(self):
         """
@@ -52,7 +52,7 @@ class ChangelogUtils:
         """Updates a section of the changelog with message"""
         data = self.get_changelog_data()
         i = data.index(self.SECTIONS[section]) + 1
-        data.insert(i, "* {}\n".format(message))
+        data.insert(i, f"* {message}\n")
         self.write_changelog(data)
 
     def get_current_version(self):
@@ -159,7 +159,7 @@ class ChangelogUtils:
             z = 0
         else:
             z = int(z) + 1
-        return "{}.{}.{}".format(x, y, z)
+        return f"{x}.{y}.{z}"
 
     def match_version(self, line):
         """

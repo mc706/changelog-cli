@@ -45,7 +45,7 @@ for change_type in ChangelogUtils.TYPES_OF_CHANGE:
     section_command_func = bind_section_command(change_type)
     cli.command(
         name=change_type,
-        help="Add a line to the '{}' section".format(change_type.capitalize())
+        help=f"Add a line to the '{change_type.capitalize()}' section"
     )(section_command_func)
 
 
@@ -62,7 +62,7 @@ def release(release_type, auto_confirm):
         if auto_confirm:
             CL.cut_release()
         else:
-            if click.confirm("Planning on releasing version {}. Proceed?".format(new_version)):
+            if click.confirm(f"Planning on releasing version {new_version}. Proceed?"):
                 CL.cut_release(release_type)
     except ChangelogDoesNotExistError:
         if click.confirm("No CHANGELOG.md found, do you want to create one?"):
