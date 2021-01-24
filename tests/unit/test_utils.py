@@ -47,31 +47,31 @@ class UtilsTestCase(unittest.TestCase):
         self.assertEqual(self.cl.crunch_lines(document), ['this\n', '---\n', '\n', 'that\n'])
 
     def test_get_release_suggestion_patch(self):
-        with patch.object(ChangelogUtils, 'get_changes', return_value={'changed': ''}):
+        with patch.object(ChangelogUtils, 'get_unreleased_change_types', return_value={'changed': ''}):
             CL = ChangelogUtils()
             result = CL.get_release_suggestion()
             self.assertEqual(result, 'patch')
 
     def test_get_release_suggestion_minor(self):
-        with patch.object(ChangelogUtils, 'get_changes', return_value={'added': 'stuff'}):
+        with patch.object(ChangelogUtils, 'get_unreleased_change_types', return_value={'added': 'stuff'}):
             CL = ChangelogUtils()
             result = CL.get_release_suggestion()
             self.assertEqual(result, 'minor')
 
     def test_get_release_suggestion_major(self):
-        with patch.object(ChangelogUtils, 'get_changes', return_value={'removed': 'stuff'}):
+        with patch.object(ChangelogUtils, 'get_unreleased_change_types', return_value={'removed': 'stuff'}):
             CL = ChangelogUtils()
             result = CL.get_release_suggestion()
             self.assertEqual(result, 'major')
 
     def test_get_release_suggestion_minor_with_beta_headers(self):
-        with patch.object(ChangelogUtils, 'get_changes', return_value={'new': 'stuff'}):
+        with patch.object(ChangelogUtils, 'get_unreleased_change_types', return_value={'new': 'stuff'}):
             CL = ChangelogUtils()
             result = CL.get_release_suggestion()
             self.assertEqual(result, 'minor')
 
     def test_get_release_suggestion_major_with_beta_headers(self):
-        with patch.object(ChangelogUtils, 'get_changes', return_value={'breaks': 'stuff'}):
+        with patch.object(ChangelogUtils, 'get_unreleased_change_types', return_value={'breaks': 'stuff'}):
             CL = ChangelogUtils()
             result = CL.get_release_suggestion()
             self.assertEqual(result, 'major')
@@ -149,7 +149,7 @@ class UtilsTestCase(unittest.TestCase):
         ]
         with patch.object(ChangelogUtils, 'get_changelog_data', return_value=sample_data) as mock_read:
             CL = ChangelogUtils()
-            result = CL.get_changes()
+            result = CL.get_unreleased_change_types()
         self.assertTrue('added' in result)
         self.assertTrue('fixed' in result)
 
@@ -175,7 +175,7 @@ class UtilsTestCase(unittest.TestCase):
         ]
         with patch.object(ChangelogUtils, 'get_changelog_data', return_value=sample_data) as mock_read:
             CL = ChangelogUtils()
-            result = CL.get_changes()
+            result = CL.get_unreleased_change_types()
         self.assertTrue('new' in result)
         self.assertTrue('changes' in result)
         self.assertTrue('fixes' in result)
@@ -282,7 +282,6 @@ class ChangelogFileOperationTestCase(unittest.TestCase):
         self.assertTrue('### Removed\n' in data)
         self.assertTrue('### Fixed\n' in data)
         self.assertTrue('### Security\n' in data)
-#
 
     def test_match_version_canonical(self):
         line = "## 0.2.1 - (2017-06-09)"
