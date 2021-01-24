@@ -1,7 +1,7 @@
 import os
 import re
 from datetime import date
-from typing import cast, Dict, List, Union
+from typing import cast, Dict, List, Optional
 
 from changelog.templates import BASE, RELEASE_LINE, DEFAULT_VERSION, RELEASE_LINE_REGEXES
 from changelog.exceptions import ChangelogDoesNotExistError
@@ -63,7 +63,7 @@ class ChangelogUtils:
         for line in data:
             match = self.match_version(line)
             if match:
-                return cast(str, match)
+                return match
         return DEFAULT_VERSION
 
     def get_changes(self) -> Dict[str, str]:
@@ -163,12 +163,12 @@ class ChangelogUtils:
             z += 1
         return f"{x}.{y}.{z}"
 
-    def match_version(self, line: str) -> Union[bool, str]:
+    def match_version(self, line: str) -> Optional[str]:
         """
-        Matches a line vs the list of version strings. Returns group or False
+        Matches a line vs the list of version strings. Returns group, or None if no match is found.
         """
         for regex in RELEASE_LINE_REGEXES:
             match = re.match(regex, line)
             if match and match.group('v'):
                 return match.group('v')
-        return False
+        return None
