@@ -128,6 +128,7 @@ class UtilsTestCase(unittest.TestCase):
             "\n",
             "### Fixes\n",
             "* fixed bug 1\n",
+            "* fixed bug 2\n",
             "\n",
             "### Breaks\n",
             "\n",
@@ -138,8 +139,8 @@ class UtilsTestCase(unittest.TestCase):
         with patch.object(ChangelogUtils, 'get_changelog_data', return_value=sample_data) as mock_read:
             CL = ChangelogUtils()
             result = CL.get_changes()
-        self.assertTrue('new' in result)
-        self.assertTrue('fix' in result)
+        expected = {'new': ['added feature x'], 'fix': ['fixed bug 1', 'fixed bug 2']}
+        self.assertEqual(expected, result)
 
     def test_get_new_release_version_patch(self):
         with patch.object(ChangelogUtils, 'get_current_version', return_value='1.1.1'):

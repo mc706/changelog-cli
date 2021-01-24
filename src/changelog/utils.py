@@ -4,6 +4,7 @@ from datetime import date
 
 from changelog.templates import INIT, UNRELEASED, RELEASE_LINE, DEFAULT_VERSION, RELEASE_LINE_REGEXES
 from changelog.exceptions import ChangelogDoesNotExistError
+from collections import defaultdict
 
 
 class ChangelogUtils:
@@ -60,9 +61,9 @@ class ChangelogUtils:
         return DEFAULT_VERSION
 
     def get_changes(self):
-        """Get the list of chances since the last release"""
+        """Get the changes since the last release"""
         data = self.get_changelog_data()
-        changes = {}
+        changes = defaultdict(list)
         reading = False
         section = None
         for line in data:
@@ -74,7 +75,7 @@ class ChangelogUtils:
                 if line in self.REVERSE_SECTIONS:
                     section = self.REVERSE_SECTIONS[line]
                     continue
-                changes[section] = line.strip().lstrip("* ")
+                changes[section].append(line.strip().lstrip("* "))
                 continue
             if line == "## Unreleased\n":
                 reading = True
