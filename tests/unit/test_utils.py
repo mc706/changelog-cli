@@ -47,19 +47,31 @@ class UtilsTestCase(unittest.TestCase):
         self.assertEqual(self.cl.crunch_lines(document), ['this\n', '---\n', '\n', 'that\n'])
 
     def test_get_release_suggestion_patch(self):
-        with patch.object(ChangelogUtils, 'get_changes', return_value={'changes': ''}):
+        with patch.object(ChangelogUtils, 'get_changes', return_value={'changed': ''}):
             CL = ChangelogUtils()
             result = CL.get_release_suggestion()
             self.assertEqual(result, 'patch')
 
     def test_get_release_suggestion_minor(self):
-        with patch.object(ChangelogUtils, 'get_changes', return_value={'new': 'stuff'}):
+        with patch.object(ChangelogUtils, 'get_changes', return_value={'added': 'stuff'}):
             CL = ChangelogUtils()
             result = CL.get_release_suggestion()
             self.assertEqual(result, 'minor')
 
     def test_get_release_suggestion_major(self):
-        with patch.object(ChangelogUtils, 'get_changes', return_value={'break': 'stuff'}):
+        with patch.object(ChangelogUtils, 'get_changes', return_value={'removed': 'stuff'}):
+            CL = ChangelogUtils()
+            result = CL.get_release_suggestion()
+            self.assertEqual(result, 'major')
+
+    def test_get_release_suggestion_minor_with_beta_headers(self):
+        with patch.object(ChangelogUtils, 'get_changes', return_value={'new': 'stuff'}):
+            CL = ChangelogUtils()
+            result = CL.get_release_suggestion()
+            self.assertEqual(result, 'minor')
+
+    def test_get_release_suggestion_major_with_beta_headers(self):
+        with patch.object(ChangelogUtils, 'get_changes', return_value={'breaks': 'stuff'}):
             CL = ChangelogUtils()
             result = CL.get_release_suggestion()
             self.assertEqual(result, 'major')
@@ -70,25 +82,25 @@ class UtilsTestCase(unittest.TestCase):
                 "## Unreleased\n",
                 "---\n",
                 "\n",
-                "### New\n",
+                "### Added\n",
                 "\n",
-                "### Fixes\n",
+                "### Fixed\n",
                 "\n",
-                "### Breaks\n",
+                "### Removed\n",
             ]
             with patch.object(ChangelogUtils, 'get_changelog_data', return_value=sample_data) as mock_read:
                 CL = ChangelogUtils()
-                CL.update_section("new", 'this is a test')
+                CL.update_section("added", 'this is a test')
         mock_write.assert_called_once_with([
             "## Unreleased\n",
             "---\n",
             "\n",
-            "### New\n",
+            "### Added\n",
             "* this is a test\n",
             "\n",
-            "### Fixes\n",
+            "### Fixed\n",
             "\n",
-            "### Breaks\n",
+            "### Removed\n",
         ])
 
     def test_get_current_version(self):
@@ -96,11 +108,11 @@ class UtilsTestCase(unittest.TestCase):
             "## Unreleased\n",
             "---\n",
             "\n",
-            "### New\n",
+            "### Added\n",
             "\n",
-            "### Fixes\n",
+            "### Fixed\n",
             "\n",
-            "### Breaks\n",
+            "### Removed\n",
             "\n",
             "\n",
             "## 0.3.2 - (2017-06-09)\n",
@@ -123,8 +135,34 @@ class UtilsTestCase(unittest.TestCase):
             "## Unreleased\n",
             "---\n",
             "\n",
+            "### Added\n",
+            "* added feature x\n",
+            "\n",
+            "### Fixed\n",
+            "* fixed bug 1\n",
+            "\n",
+            "### Removed\n",
+            "\n",
+            "\n",
+            "## 0.3.2 - (2017-06-09)\n",
+            "---\n",
+        ]
+        with patch.object(ChangelogUtils, 'get_changelog_data', return_value=sample_data) as mock_read:
+            CL = ChangelogUtils()
+            result = CL.get_changes()
+        self.assertTrue('added' in result)
+        self.assertTrue('fixed' in result)
+
+    def test_get_changes_works_with_beta_headers(self):
+        sample_data = [
+            "## Unreleased\n",
+            "---\n",
+            "\n",
             "### New\n",
             "* added feature x\n",
+            "\n",
+            "### Changes\n",
+            "* changes feature x\n",
             "\n",
             "### Fixes\n",
             "* fixed bug 1\n",
@@ -139,7 +177,8 @@ class UtilsTestCase(unittest.TestCase):
             CL = ChangelogUtils()
             result = CL.get_changes()
         self.assertTrue('new' in result)
-        self.assertTrue('fix' in result)
+        self.assertTrue('changes' in result)
+        self.assertTrue('fixes' in result)
 
     def test_get_new_release_version_patch(self):
         with patch.object(ChangelogUtils, 'get_current_version', return_value='1.1.1'):
@@ -196,22 +235,61 @@ class ChangelogFileOperationTestCase(unittest.TestCase):
 
     def test_cut_release(self):
         self.CL.initialize_changelog_file()
-        self.CL.update_section('new', "this is a test")
+        self.CL.update_section('added', "this is a test")
         self.CL.cut_release('suggest')
         data = self.CL.get_changelog_data()
         self.assertTrue('## Unreleased\n' in data)
         self.assertTrue('## 0.1.0 - ({})\n'.format(date.today().isoformat()) in data)
-        self.CL.update_section('break', "removed a thing")
+        self.CL.update_section('removed', "removed a thing")
         self.CL.cut_release('suggest')
         data2 = self.CL.get_changelog_data()
         self.assertTrue('## Unreleased\n' in data2)
+
+    def test_cut_release_works_with_beta_headers(self):
+        sample_data = [
+            "## Unreleased\n",
+            "---\n",
+            "\n",
+            "### New\n",
+            "* added feature x\n",
+            "\n",
+            "### Changes\n",
+            "* changes feature x\n",
+            "\n",
+            "### Fixes\n",
+            "* fixed bug 1\n",
+            "\n",
+            "### Breaks\n",
+            "\n",
+            "\n",
+            "## 0.3.2 - (2017-06-09)\n",
+            "---\n",
+        ]
+        with patch.object(ChangelogUtils, 'get_changelog_data', return_value=sample_data) as mock_read:
+            CL = ChangelogUtils()
+            CL.cut_release('suggest')
+        data = CL.get_changelog_data()
+        self.assertTrue('## Unreleased\n' in data)
+        self.assertTrue('## 0.4.0 - ({})\n'.format(date.today().isoformat()) in data)
+        # The beta headings still exist
+        self.assertTrue('### New\n' in data)
+        self.assertTrue('### Changes\n' in data)
+        self.assertTrue('### Fixes\n' in data)
+        # The new headings exist
+        self.assertTrue('### Added\n' in data)
+        self.assertTrue('### Changed\n' in data)
+        self.assertTrue('### Deprecated\n' in data)
+        self.assertTrue('### Removed\n' in data)
+        self.assertTrue('### Fixed\n' in data)
+        self.assertTrue('### Security\n' in data)
+#
 
     def test_match_version_canonical(self):
         line = "## 0.2.1 - (2017-06-09)"
         self.assertEqual(self.CL.match_version(line), '0.2.1')
 
     def test_match_version_miss(self):
-        line = '### Changes'
+        line = '### Changed'
         self.assertFalse(self.CL.match_version(line))
 
     def test_match_version_basic(self):
