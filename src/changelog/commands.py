@@ -14,12 +14,12 @@ def print_version(ctx, _, value):
 
 @click.group()
 @click.option('-v', '--version', is_flag=True, callback=print_version, expose_value=False, is_eager=True)
-def cli():
+def cli() -> None:
     pass
 
 
 @cli.command(help="Create CHANGELOG.md with some basic documentation")
-def init():
+def init() -> None:
     click.echo('Initializing Changelog')
     CL = ChangelogUtils()
     outcome = CL.initialize_changelog_file()
@@ -28,7 +28,7 @@ def init():
 
 def bind_section_command(name):
     @click.argument("message")
-    def section_command(message):
+    def section_command(message: str) -> None:
         CL = ChangelogUtils()
         try:
             CL.update_section(name, message)
@@ -45,7 +45,7 @@ for change_type in ChangelogUtils.TYPES_OF_CHANGE:
     section_command_func = bind_section_command(change_type)
     cli.command(
         name=change_type,
-        help="Add a line to the '{}' section".format(change_type.capitalize())
+        help=f"Add a line to the '{change_type.capitalize()}' section"
     )(section_command_func)
 
 
@@ -55,14 +55,14 @@ for change_type in ChangelogUtils.TYPES_OF_CHANGE:
 @click.option('--major', 'release_type', flag_value='major')
 @click.option('--suggest', 'release_type', flag_value='suggest', default=True)
 @click.option('--yes', 'auto_confirm', is_flag=True)
-def release(release_type, auto_confirm):
+def release(release_type: str, auto_confirm: bool) -> None:
     CL = ChangelogUtils()
     try:
         new_version = CL.get_new_release_version(release_type)
         if auto_confirm:
             CL.cut_release()
         else:
-            if click.confirm("Planning on releasing version {}. Proceed?".format(new_version)):
+            if click.confirm(f"Planning on releasing version {new_version}. Proceed?"):
                 CL.cut_release(release_type)
     except ChangelogDoesNotExistError:
         if click.confirm("No CHANGELOG.md found, do you want to create one?"):
@@ -71,7 +71,7 @@ def release(release_type, auto_confirm):
 
 @cli.command(help="returns the suggested next version based on the current logged changes")
 @click.option('--type', "release_type", is_flag=True)
-def suggest(release_type):
+def suggest(release_type: str) -> None:
     CL = ChangelogUtils()
     try:
         if release_type:
@@ -84,7 +84,7 @@ def suggest(release_type):
 
 
 @cli.command(help="returns the current application version based on the changelog")
-def current():
+def current() -> None:
     CL = ChangelogUtils()
     try:
         version = CL.get_current_version()
@@ -94,7 +94,7 @@ def current():
 
 
 @cli.command(help="view the current and unreleased portion of the changelog")
-def view():
+def view() -> None:
     CL = ChangelogUtils()
     try:
         data = CL.get_changelog_data()

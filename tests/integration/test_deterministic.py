@@ -9,7 +9,7 @@ from changelog.utils import ChangelogUtils
 
 START = random.getstate()
 
-OPTIONS = [(section, "{}{{}}".format(section)) for section in ChangelogUtils.TYPES_OF_CHANGE]
+OPTIONS = [(section, f"{section}{{}}") for section in ChangelogUtils.TYPES_OF_CHANGE]
 
 
 class CliDeterministicTestCase(unittest.TestCase):

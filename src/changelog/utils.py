@@ -1,37 +1,39 @@
 import os
 import re
 from datetime import date
+from typing import cast, Dict, List, Optional
 
 from changelog.templates import BASE, RELEASE_LINE, DEFAULT_VERSION, RELEASE_LINE_REGEXES
 from changelog.exceptions import ChangelogDoesNotExistError
 
+Lines = List[str]
 
 class ChangelogUtils:
-    CHANGELOG = 'CHANGELOG.md'
-    TYPES_OF_CHANGE = ['added', 'changed', 'deprecated', 'removed', 'fixed', 'security']
-    SECTIONS = {change_type: "### {}\n".format(change_type.capitalize()) for change_type in TYPES_OF_CHANGE}
-    REVERSE_SECTIONS = {v: k for k, v in SECTIONS.items()}
+    CHANGELOG: str = 'CHANGELOG.md'
+    TYPES_OF_CHANGE: List[str] = ['added', 'changed', 'deprecated', 'removed', 'fixed', 'security']
+    SECTIONS: Dict[str, str] = {change_type: f"### {change_type.capitalize()}\n" for change_type in TYPES_OF_CHANGE}
+    REVERSE_SECTIONS: Dict[str, str] = {v: k for k, v in SECTIONS.items()}
 
     # These were the sections before v1.0.0
     # Kept so that user from pre-v1.0.0 versions can upgrade
-    BETA_TYPES_OF_CHANGE = ['new', 'changes', 'fixes', 'breaks']
-    BETA_SECTIONS = {change_type: "### {}\n".format(change_type.capitalize()) for change_type in BETA_TYPES_OF_CHANGE}
-    BETA_REVERSE_SECTIONS = {v: k for k, v in BETA_SECTIONS.items()}
+    BETA_TYPES_OF_CHANGE: List[str] = ['new', 'changes', 'fixes', 'breaks']
+    BETA_SECTIONS: Dict[str, str] = {change_type: f"### {change_type.capitalize()}\n" for change_type in BETA_TYPES_OF_CHANGE}
+    BETA_REVERSE_SECTIONS: Dict[str, str] = {v: k for k, v in BETA_SECTIONS.items()}
 
-    UNRELEASED = "\n## Unreleased\n---\n\n" + ''.join(["{0}\n\n".format(section_header) for section_header in REVERSE_SECTIONS.keys()])
-    INIT = BASE + UNRELEASED
+    UNRELEASED: str = "\n## Unreleased\n---\n\n" + ''.join([f"{section_header}\n\n" for section_header in REVERSE_SECTIONS.keys()])
+    INIT: str = BASE + UNRELEASED
 
-    def initialize_changelog_file(self):
+    def initialize_changelog_file(self) -> str:
         """
         Creates a changelog if one does not already exist
         """
         if os.path.isfile(self.CHANGELOG):
-            return "{} already exists".format(self.CHANGELOG)
+            return f"{self.CHANGELOG} already exists"
         with open(self.CHANGELOG, 'w') as changelog:
             changelog.write(self.INIT)
-        return "Created {}".format(self.CHANGELOG)
+        return f"Created {self.CHANGELOG}"
 
-    def get_changelog_data(self):
+    def get_changelog_data(self) -> Lines:
         """
         Gets all of the lines from the current changelog
         """
@@ -41,21 +43,21 @@ class ChangelogUtils:
             data = changelog.readlines()
         return data
 
-    def write_changelog(self, line_list):
+    def write_changelog(self, line_list: Lines) -> None:
         """
         writes the lines out to the changelog
         """
         with open(self.CHANGELOG, 'w') as changelog:
             changelog.writelines(line_list)
 
-    def update_section(self, section, message):
+    def update_section(self, section, message: str) -> None:
         """Updates a section of the changelog with message"""
         data = self.get_changelog_data()
         i = data.index(self.SECTIONS[section]) + 1
-        data.insert(i, "* {}\n".format(message))
+        data.insert(i, f"* {message}\n")
         self.write_changelog(data)
 
-    def get_current_version(self):
+    def get_current_version(self) -> str:
         """Gets the Current Application Version Based on Changelog"""
         data = self.get_changelog_data()
         for line in data:
@@ -64,7 +66,7 @@ class ChangelogUtils:
                 return match
         return DEFAULT_VERSION
 
-    def get_changes(self):
+    def get_changes(self) -> Dict[str, str]:
         """Get the list of chances since the last release"""
         data = self.get_changelog_data()
         changes = {}
@@ -77,12 +79,12 @@ class ChangelogUtils:
                 break
             if reading:
                 if line in self.REVERSE_SECTIONS:
-                    section = self.REVERSE_SECTIONS[line]
+                    section = self.REVERSE_SECTIONS.get(line)
                     continue
                 elif line in self.BETA_REVERSE_SECTIONS:
                     section = self.BETA_REVERSE_SECTIONS[line]
                     continue
-                changes[section] = line.strip().lstrip("* ")
+                changes[cast(str, section)] = line.strip().lstrip("* ")
                 continue
             if line == "## Unreleased\n":
                 reading = True
@@ -90,7 +92,7 @@ class ChangelogUtils:
 
         return changes
 
-    def get_release_suggestion(self):
+    def get_release_suggestion(self) -> str:
         """Suggests a release type"""
         changes = self.get_changes()
         if 'removed' in changes or 'breaks' in changes:
@@ -99,7 +101,7 @@ class ChangelogUtils:
             return "minor"
         return "patch"
 
-    def get_new_release_version(self, release_type):
+    def get_new_release_version(self, release_type: str) -> str:
         """
         Returns the version of the new release
         """
@@ -108,7 +110,7 @@ class ChangelogUtils:
             release_type = self.get_release_suggestion()
         return self.bump_version(current_version, release_type)
 
-    def cut_release(self, release_type="suggest"):
+    def cut_release(self, release_type: str = "suggest") -> None:
         """Cuts a release and updates changelog"""
         new_version = self.get_new_release_version(release_type)
         changes = self.get_changes()
@@ -129,7 +131,7 @@ class ChangelogUtils:
         output = self.crunch_lines(output)
         self.write_changelog(output)
 
-    def crunch_lines(self, line_list):
+    def crunch_lines(self, line_list: Lines) -> Lines:
         """
         Removes triplicate blank lines from changelog to prevent it from getting too long
         """
@@ -146,27 +148,27 @@ class ChangelogUtils:
                 i += 1
         return line_list
 
-    def bump_version(self, version, release_type):
+    def bump_version(self, version: str, release_type: str) -> str:
         """
         Bumps a version number based on release_type
         """
-        x, y, z = version.split(".")
+        x, y, z = [int(i) for i in version.split(".")]
         if release_type == "major":
-            x = int(x) + 1
+            x += 1
             y = z = 0
         elif release_type == "minor":
-            y = int(y) + 1
+            y += 1
             z = 0
         else:
-            z = int(z) + 1
-        return "{}.{}.{}".format(x, y, z)
+            z += 1
+        return f"{x}.{y}.{z}"
 
-    def match_version(self, line):
+    def match_version(self, line: str) -> Optional[str]:
         """
-        Matches a line vs the list of version strings. Returns group or False
+        Matches a line vs the list of version strings. Returns group, or None if no match is found.
         """
         for regex in RELEASE_LINE_REGEXES:
             match = re.match(regex, line)
             if match and match.group('v'):
                 return match.group('v')
-        return False
+        return None

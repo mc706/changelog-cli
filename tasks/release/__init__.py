@@ -35,7 +35,7 @@ def bump_version(context):
     """
     version = context.run('changelog suggest')
     with open(context['VERSION_FILE'], 'w') as version_file:
-        version_file.write('__version__ = "{0}" \n'.format(version.stdout.strip()))
+        version_file.write(f'__version__ = "{version.stdout.strip()}" \n')
 
 
 def release_changelog(context):
