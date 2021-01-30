@@ -84,7 +84,7 @@ class ChangelogUtils:
                 elif line in self.BETA_REVERSE_SECTIONS:
                     section = self.BETA_REVERSE_SECTIONS[line]
                     continue
-                change_types.add(section)
+                change_types.add(cast(str, section))
                 continue
             if line == "## Unreleased\n":
                 reading = True
