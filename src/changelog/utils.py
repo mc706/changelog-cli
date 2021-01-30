@@ -1,7 +1,7 @@
 import os
 import re
 from datetime import date
-from typing import cast, Dict, List, Optional
+from typing import cast, Dict, List, Optional, Set
 
 from changelog.templates import BASE, RELEASE_LINE, DEFAULT_VERSION, RELEASE_LINE_REGEXES
 from changelog.exceptions import ChangelogDoesNotExistError
@@ -66,10 +66,10 @@ class ChangelogUtils:
                 return match
         return DEFAULT_VERSION
 
-    def get_changes(self) -> Dict[str, str]:
+    def get_unreleased_change_types(self) -> Set[str]:
         """Get the list of chances since the last release"""
         data = self.get_changelog_data()
-        changes = {}
+        change_types = set()
         reading = False
         section = None
         for line in data:
@@ -79,25 +79,25 @@ class ChangelogUtils:
                 break
             if reading:
                 if line in self.REVERSE_SECTIONS:
-                    section = self.REVERSE_SECTIONS.get(line)
+                    section = self.REVERSE_SECTIONS[line]
                     continue
                 elif line in self.BETA_REVERSE_SECTIONS:
                     section = self.BETA_REVERSE_SECTIONS[line]
                     continue
-                changes[cast(str, section)] = line.strip().lstrip("* ")
+                change_types.add(section)
                 continue
             if line == "## Unreleased\n":
                 reading = True
                 continue
 
-        return changes
+        return change_types
 
     def get_release_suggestion(self) -> str:
         """Suggests a release type"""
-        changes = self.get_changes()
-        if 'removed' in changes or 'breaks' in changes:
+        change_types = self.get_unreleased_change_types()
+        if 'removed' in change_types or 'breaks' in change_types:
             return "major"
-        if 'added' in changes or 'new' in changes:
+        if 'added' in change_types or 'new' in change_types:
             return "minor"
         return "patch"
 
@@ -113,7 +113,7 @@ class ChangelogUtils:
     def cut_release(self, release_type: str = "suggest") -> None:
         """Cuts a release and updates changelog"""
         new_version = self.get_new_release_version(release_type)
-        changes = self.get_changes()
+        change_types = self.get_unreleased_change_types()
         data = self.get_changelog_data()
         output = []
         unreleased_position = 0
@@ -124,7 +124,7 @@ class ChangelogUtils:
             if line == "## Unreleased\n":
                 unreleased_position = i
                 line = RELEASE_LINE.format(new_version, date.today().isoformat())
-            if reading and line in self.REVERSE_SECTIONS and self.REVERSE_SECTIONS[line] not in changes:
+            if reading and line in self.REVERSE_SECTIONS and self.REVERSE_SECTIONS[line] not in change_types:
                 continue
             output.append(line)
         output.insert(unreleased_position, self.UNRELEASED)
