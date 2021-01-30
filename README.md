@@ -1,7 +1,7 @@
 # Changelog CLI
 
 [![PyPI version](https://badge.fury.io/py/changelog-cli.svg)](https://badge.fury.io/py/changelog-cli)
-[![Build Status](https://travis-ci.org/mc706/changelog-cli.svg?branch=master)](https://travis-ci.org/mc706/changelog-cli)
+[![Build Status](https://github.com/mc706/changelog-cli/workflows/Tests/badge.svg)](https://github.com/mc706/changelog-cli/actions?query=workflow%3ATests)
 [![Coverage Status](https://coveralls.io/repos/github/mc706/changelog-cli/badge.svg?branch=master)](https://coveralls.io/github/mc706/changelog-cli?branch=master)
 [![PyPI](https://img.shields.io/pypi/pyversions/changelog-cli.svg)](https://pypi.org/project/changelog-cli/)
 
