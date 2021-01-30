@@ -81,7 +81,7 @@ class ChangelogUtils:
                 if line in self.REVERSE_SECTIONS:
                     section = self.REVERSE_SECTIONS[line]
                     continue
-                elif line in self.BETA_REVERSE_SECTIONS:
+                if line in self.BETA_REVERSE_SECTIONS:
                     section = self.BETA_REVERSE_SECTIONS[line]
                     continue
                 change_types.add(cast(str, section))
