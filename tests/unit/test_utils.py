@@ -1,11 +1,7 @@
 import unittest
 import os
 from datetime import date
-
-try:
-    from unittest.mock import patch
-except ImportError:
-    from mock import patch
+from unittest.mock import patch
 
 from changelog.utils import ChangelogUtils
 from changelog.exceptions import ChangelogDoesNotExistError
