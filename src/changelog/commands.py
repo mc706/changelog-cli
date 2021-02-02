@@ -109,3 +109,22 @@ def view() -> None:
     except ChangelogDoesNotExistError:
         if click.confirm("No CHANGELOG.md found, do you want to create one?"):
             CL.initialize_changelog_file()
+
+@cli.command(help="export changelog to another format")
+@click.option('--json', 'format', flag_value='json', default=True)
+def export(format):
+
+    CL = ChangelogUtils()
+    try:
+        data = CL.get_changelog_data()
+        first = False
+        for line in data:
+            if CL.match_version(line):
+                if first:
+                    break
+                first = True
+            click.echo(line.strip())
+
+    except ChangelogDoesNotExistError:
+        if click.confirm("No CHANGELOG.md Found, do you want to create one?"):
+            CL.initialize_changelog_file()
