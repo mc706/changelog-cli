@@ -1,0 +1,52 @@
+name: Tests
+
+# Controls when the action will run. Triggers the workflow on push or pull request
+# events but only for the master branch
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version:
+          - 3.6
+          - 3.7
+          - 3.8
+          - 3.9
+          - "pypy-3.6" # latest version of PyPy that support Python 3.6
+          - "pypy-3.7" # latest version of PyPy that support Python 3.7
+
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run tests
+        run: coverage run -m unittest discover
+
+      - name: Coveralls
+        uses: AndreMiras/coveralls-python-action@v20201129
+        with:
+          parallel: true
+          flag-name: run-${{ matrix.python-version }}
+
+  finish:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Coveralls Finished
+        uses: AndreMiras/coveralls-python-action@v20201129
+        with:
+          parallel-finished: true

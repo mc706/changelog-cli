@@ -7,12 +7,12 @@ with open(VERSION_FILE, 'r') as vf:
 v = value.split('=')[1].strip().strip('"')
 
 dev_requirements = [
-    'prospector',
-    'twine',
     'coverage',
     'invoke',
-    'wheel',
-    'mock'
+    'mock',
+    'prospector',
+    'twine',
+    'wheel'
 ]
 
 setup(
