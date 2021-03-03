@@ -16,6 +16,7 @@ This project adheres to [Semantic Versioning](http://semver.org/) and [Keep a Ch
   * Existing CHANGELOGs will start using these headers after the new run of `changelog release`
 
 ### Fixed
+* keeping format of `release line`
 * Fix Description for pypi
 
 ### Removed
