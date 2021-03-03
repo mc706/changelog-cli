@@ -22,6 +22,7 @@ class ChangelogUtils:
 
     UNRELEASED: str = "\n## Unreleased\n---\n\n" + ''.join([f"{section_header}\n\n" for section_header in REVERSE_SECTIONS.keys()])
     INIT: str = BASE + UNRELEASED
+    VERSION_FORMAT: str = "date"
 
     def initialize_changelog_file(self) -> str:
         """
@@ -123,7 +124,7 @@ class ChangelogUtils:
                 reading = False
             if line == "## Unreleased\n":
                 unreleased_position = i
-                line = RELEASE_LINE.format(new_version, date.today().isoformat())
+                line = RELEASE_LINE[self.VERSION_FORMAT].format(new_version, date.today().isoformat())
             if reading and line in self.REVERSE_SECTIONS and self.REVERSE_SECTIONS[line] not in change_types:
                 continue
             output.append(line)
@@ -167,8 +168,9 @@ class ChangelogUtils:
         """
         Matches a line vs the list of version strings. Returns group, or None if no match is found.
         """
-        for regex in RELEASE_LINE_REGEXES:
+        for version_format, regex in RELEASE_LINE_REGEXES.items():
             match = re.match(regex, line)
             if match and match.group('v'):
+                self.VERSION_FORMAT = version_format
                 return match.group('v')
         return None
