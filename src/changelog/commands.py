@@ -60,7 +60,7 @@ def release(release_type: str, auto_confirm: bool) -> None:
     try:
         new_version = CL.get_new_release_version(release_type)
         if auto_confirm:
-            CL.cut_release()
+            CL.cut_release(release_type)
         else:
             if click.confirm(f"Planning on releasing version {new_version}. Proceed?"):
                 CL.cut_release(release_type)
