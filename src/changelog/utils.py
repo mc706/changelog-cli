@@ -153,6 +153,8 @@ class ChangelogUtils:
         """
         Bumps a version number based on release_type
         """
+        # `x`, `y`, `z` are the names used in the semver spec
+        # pylint: disable=invalid-name
         x, y, z = [int(i) for i in version.split(".")]
         if release_type == "major":
             x += 1
