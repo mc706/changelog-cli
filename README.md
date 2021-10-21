@@ -19,18 +19,18 @@ pip install changelog-cli
 
 ## How To
 To keep an accurate changelog, whenever you commit a change that affects how end users use
-your project, use this command line tool to add a line to the changelog. 
+your project, use this command line tool to add a line to the changelog.
 
 If you added a new feature, use something like `changelog added "added feature x"`. This will add a
-line to your `CHANGELOG.md` under the `### Added` section. 
+line to your `CHANGELOG.md` under the `### Added` section.
 
-When you are ready for release, run `changelog release` and that will infer the correct semantic 
+When you are ready for release, run `changelog release` and that will infer the correct semantic
 version based on the types of changes since the last release. For example your `added` change should
 prompt a `minor (0.X.0)` release. A `removed` change would prompt a `major (X.0.0)` version bump and `fixed` or `changed` changes
  would prompt a `patch (0.0.X)`.
- 
+
 You can manually override what type of of release via `changelog release --minor` using the `--patch`, `--minor` or `--major`
-flags. 
+flags.
 
 
 ## Commands
