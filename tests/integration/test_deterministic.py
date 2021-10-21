@@ -31,7 +31,7 @@ class CliDeterministicTestCase(unittest.TestCase):
                     args = [line[0], line[1].format(random.random())]
                     self.runner.invoke(cli, args)
                 self.runner.invoke(cli, ['release', '--yes'])
-            with open("CHANGELOG.md", 'r') as first_pass_file:
+            with open("CHANGELOG.md", 'r', encoding='utf-8') as first_pass_file:
                 first_pass = first_pass_file.read()
         # reset random
         random.setstate(START)
@@ -46,6 +46,6 @@ class CliDeterministicTestCase(unittest.TestCase):
                     args = [line[0], line[1].format(random.random())]
                     self.runner.invoke(cli, args)
                 self.runner.invoke(cli, ['release', '--yes'])
-            with open("CHANGELOG.md", 'r') as second_pass_file:
+            with open("CHANGELOG.md", 'r', encoding='utf-8') as second_pass_file:
                 second_pass = second_pass_file.read()
         self.assertEqual(first_pass, second_pass)
