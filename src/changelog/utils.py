@@ -8,6 +8,7 @@ from changelog.exceptions import ChangelogDoesNotExistError
 
 Lines = List[str]
 
+
 class ChangelogUtils:
     CHANGELOG: str = 'CHANGELOG.md'
     TYPES_OF_CHANGE: List[str] = ['added', 'changed', 'deprecated', 'removed', 'fixed', 'security']
