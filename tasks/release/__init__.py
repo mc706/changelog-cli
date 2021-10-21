@@ -34,7 +34,7 @@ def bump_version(context):
     :return:
     """
     version = context.run('changelog suggest')
-    with open(context['VERSION_FILE'], 'w') as version_file:
+    with open(context['VERSION_FILE'], 'w', encoding='utf-8') as version_file:
         version_file.write(f'__version__ = "{version.stdout.strip()}" \n')
 
 

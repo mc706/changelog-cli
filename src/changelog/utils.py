@@ -30,7 +30,7 @@ class ChangelogUtils:
         """
         if os.path.isfile(self.CHANGELOG):
             return f"{self.CHANGELOG} already exists"
-        with open(self.CHANGELOG, 'w') as changelog:
+        with open(self.CHANGELOG, 'w', encoding='utf-8') as changelog:
             changelog.write(self.INIT)
         return f"Created {self.CHANGELOG}"
 
@@ -40,7 +40,7 @@ class ChangelogUtils:
         """
         if not os.path.isfile(self.CHANGELOG):
             raise ChangelogDoesNotExistError
-        with open(self.CHANGELOG, 'r') as changelog:
+        with open(self.CHANGELOG, 'r', encoding='utf-8') as changelog:
             data = changelog.readlines()
         return data
 
@@ -48,7 +48,7 @@ class ChangelogUtils:
         """
         writes the lines out to the changelog
         """
-        with open(self.CHANGELOG, 'w') as changelog:
+        with open(self.CHANGELOG, 'w', encoding='utf-8') as changelog:
             changelog.writelines(line_list)
 
     def update_section(self, section, message: str) -> None:
