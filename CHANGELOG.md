@@ -21,7 +21,7 @@ This project adheres to [Semantic Versioning](http://semver.org/) and [Keep a Ch
 ### Removed
 
 * Removed support for Python 2
-* Removed support for Python 3 prior to 3.6
+* Removed support for Python 3 prior to 3.7
 * Removed the previous CLI flags for the change type headers: `--new`, `--change`, `--fix`, `--breaks`
 
 ## 0.7.0 - (2020-02-09)
