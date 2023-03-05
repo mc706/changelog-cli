@@ -17,92 +17,93 @@ This project adheres to [Semantic Versioning](http://semver.org/) and [Keep a Ch
 
 ### Fixed
 * Fix changelog release --<release type> --yes
+* Format release lines in the same format that keepachangelog.com does
 * Fix Description for pypi
 
 ### Removed
 
 * Removed support for Python 2
-* Removed support for Python 3 prior to 3.6
+* Removed support for Python 3 prior to 3.7
 * Removed the previous CLI flags for the change type headers: `--new`, `--change`, `--fix`, `--breaks`
 
-## 0.7.0 - (2020-02-09)
+## [0.7.0] - 2020-02-09
 ---
 
 ### Added
 * Expose the type of release with `changelog suggest --type`
 
 
-## 0.6.2 - (2017-10-27)
+## [0.6.2] - 2017-10-27
 ---
 
 ### Fixed
 * update init template
 
 
-## 0.6.1 - (2017-07-17)
+## [0.6.1] - 2017-07-17
 ---
 
 ### Changed
 * add determinism fuzz testing
 
 
-## 0.6.0 - (2017-07-16)
+## [0.6.0] - 2017-07-16
 ---
 
 ### Added
 * add view command
 
 
-## 0.5.4 - (2017-07-16)
+## [0.5.4] - 2017-07-16
 ---
 
 ### Changed
 * add 'keep a changelog' regex for parsing
 
 
-## 0.5.3 - (2017-06-16)
+## [0.5.3] - 2017-06-16
 ---
 
 ### Fixed
 * start first release at 0.1.0
 
 
-## 0.5.2 - (2017-06-13)
+## [0.5.2] - 2017-06-13
 ---
 
 ### Fixed
 * fixing documentation formatting
 
 
-## 0.5.1 - (2017-06-13)
+## [0.5.1] - 2017-06-13
 ---
 
 ### Fixed
 * unreleased position in files with shorter headers
 
 
-## 0.5.0 - (2017-06-13)
+## [0.5.0] - 2017-06-13
 ---
 
 ### Added
 * Added handling for additional version delimiter in changelog files
 
 
-## 0.4.0 - (2017-06-10)
+## [0.4.0] - 2017-06-10
 ---
 
 ### Added
 * added extra line cleanup after release
 
 
-## 0.3.5 - (2017-06-10)
+## [0.3.5] - 2017-06-10
 ---
 
 ### Changed
 * update python versions
 
 
-## 0.3.4 - (2017-06-10)
+## [0.3.4] - 2017-06-10
 ---
 
 ### Changed
@@ -110,7 +111,7 @@ This project adheres to [Semantic Versioning](http://semver.org/) and [Keep a Ch
 * add python versions to README.
 
 
-## 0.3.3 - (2017-06-10)
+## [0.3.3] - 2017-06-10
 ---
 
 ### Changed
@@ -118,21 +119,21 @@ This project adheres to [Semantic Versioning](http://semver.org/) and [Keep a Ch
 * refactor utils to be classed based for better testing
 
 
-## 0.3.2 - (2017-06-09)
+## [0.3.2] - 2017-06-09
 ---
 
 ### Fixed
 * fix documentation typo
 
 
-## 0.3.1 - (2017-06-09)
+## [0.3.1] - 2017-06-09
 ---
 
 ### Changed
 * adding example changelog output to docs
 
 
-## 0.3.0 - (2017-06-09)
+## [0.3.0] - 2017-06-09
 ---
 
 ### Added
@@ -142,21 +143,21 @@ This project adheres to [Semantic Versioning](http://semver.org/) and [Keep a Ch
 * updating documentation
 
 
-## 0.2.2 - (2017-06-09)
+## [0.2.2] - 2017-06-09
 ---
 
 ### Changed
 * update documentation to rst for pypi
 
 
-## 0.2.1 - (2017-06-09)
+## [0.2.1] - 2017-06-09
 ---
 
 ### Fixed
 * version number import
 
 
-## 0.2.0 - (2017-06-09)
+## [0.2.0] - 2017-06-09
 ---
 
 ### Added
@@ -169,7 +170,7 @@ This project adheres to [Semantic Versioning](http://semver.org/) and [Keep a Ch
 * Updating tests
 
 
-## 0.1.1 - (2017-06-09)
+## [0.1.1] - 2017-06-09
 ---
 
 ### Changed
@@ -177,7 +178,7 @@ This project adheres to [Semantic Versioning](http://semver.org/) and [Keep a Ch
 * Add build tools
 
 
-## 0.1.0 - (2017-06-09)
+## [0.1.0] - 2017-06-09
 ---
 
 ### Added

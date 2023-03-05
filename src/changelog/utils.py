@@ -8,6 +8,7 @@ from changelog.exceptions import ChangelogDoesNotExistError
 
 Lines = List[str]
 
+
 class ChangelogUtils:
     CHANGELOG: str = 'CHANGELOG.md'
     TYPES_OF_CHANGE: List[str] = ['added', 'changed', 'deprecated', 'removed', 'fixed', 'security']
@@ -29,7 +30,7 @@ class ChangelogUtils:
         """
         if os.path.isfile(self.CHANGELOG):
             return f"{self.CHANGELOG} already exists"
-        with open(self.CHANGELOG, 'w') as changelog:
+        with open(self.CHANGELOG, 'w', encoding='utf-8') as changelog:
             changelog.write(self.INIT)
         return f"Created {self.CHANGELOG}"
 
@@ -39,7 +40,7 @@ class ChangelogUtils:
         """
         if not os.path.isfile(self.CHANGELOG):
             raise ChangelogDoesNotExistError
-        with open(self.CHANGELOG, 'r') as changelog:
+        with open(self.CHANGELOG, 'r', encoding='utf-8') as changelog:
             data = changelog.readlines()
         return data
 
@@ -47,7 +48,7 @@ class ChangelogUtils:
         """
         writes the lines out to the changelog
         """
-        with open(self.CHANGELOG, 'w') as changelog:
+        with open(self.CHANGELOG, 'w', encoding='utf-8') as changelog:
             changelog.writelines(line_list)
 
     def update_section(self, section, message: str) -> None:
@@ -152,6 +153,8 @@ class ChangelogUtils:
         """
         Bumps a version number based on release_type
         """
+        # `x`, `y`, `z` are the names used in the semver spec
+        # pylint: disable=invalid-name
         x, y, z = [int(i) for i in version.split(".")]
         if release_type == "major":
             x += 1
