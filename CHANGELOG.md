@@ -16,6 +16,7 @@ This project adheres to [Semantic Versioning](http://semver.org/) and [Keep a Ch
   * Existing CHANGELOGs will start using these headers after the new run of `changelog release`
 
 ### Fixed
+* Fix changelog release --<release type> --yes
 * Format release lines in the same format that keepachangelog.com does
 * Fix Description for pypi
 
