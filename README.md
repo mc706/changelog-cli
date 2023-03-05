@@ -90,7 +90,7 @@ This project adheres to [Semantic Versioning](http://semver.org/) and [Keep a Ch
 
 ### Security
 
-## 1.5.0 - (2017-06-09)
+## [1.5.0] - 2017-06-09
 ---
 
 ### Added
@@ -100,7 +100,7 @@ This project adheres to [Semantic Versioning](http://semver.org/) and [Keep a Ch
 * remove key feature y
 
 
-## 1.4.1 - (2017-05-29)
+## [1.4.1] - 2017-05-29
 ---
 
 ### Changed
