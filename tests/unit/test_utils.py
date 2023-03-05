@@ -235,7 +235,7 @@ class ChangelogFileOperationTestCase(unittest.TestCase):
         self.CL.cut_release('suggest')
         data = self.CL.get_changelog_data()
         self.assertTrue('## Unreleased\n' in data)
-        self.assertTrue(f'## 0.1.0 - ({date.today().isoformat()})\n' in data)
+        self.assertTrue(f'## [0.1.0] - {date.today().isoformat()}\n' in data)
         self.CL.update_section('removed', "removed a thing")
         self.CL.cut_release('suggest')
         data2 = self.CL.get_changelog_data()
@@ -266,7 +266,7 @@ class ChangelogFileOperationTestCase(unittest.TestCase):
             CL.cut_release('suggest')
         data = CL.get_changelog_data()
         self.assertTrue('## Unreleased\n' in data)
-        self.assertTrue(f'## 0.4.0 - ({date.today().isoformat()})\n' in data)
+        self.assertTrue(f'## [0.4.0] - {date.today().isoformat()}\n' in data)
         # The beta headings still exist
         self.assertTrue('### New\n' in data)
         self.assertTrue('### Changes\n' in data)
